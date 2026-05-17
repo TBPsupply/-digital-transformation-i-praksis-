@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figur 1.1 — Gen AI-paradokset</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--navy-light:#243357;
+  --cream:#f5f0e8;--cream-dark:#ede7d9;
+  --brick:#c4623a;--brick-dark:#a84e2a;
+  --text:#1a2744;--text-muted:#5a6478;--text-light:#8a95a8;
+  --white:#ffffff;--border:#d5cdb8;
+  --ok:#3d7a56;--ok-bg:rgba(61,122,86,0.08);
+  --warn:#a84e2a;--warn-bg:rgba(168,78,42,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);padding:24px;}
+
+.widget{
+  max-width:760px;margin:0 auto;
+  background:var(--white);
+  border:1px solid var(--border);
+  box-shadow:0 20px 60px -20px rgba(26,39,68,0.15);
+  overflow:hidden;
+}
+
+/* ── Band ── */
+.band{
+  background:var(--navy);color:var(--cream);
+  padding:11px 28px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.band-l{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;opacity:0.85;}
+.band-r{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--brick);}
+
+/* ── Title block ── */
+.title-block{
+  padding:32px 28px 24px;
+  border-bottom:1px solid var(--cream-dark);
+  background:linear-gradient(to bottom,var(--cream),var(--white));
+}
+.fig-eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--brick);margin-bottom:10px;
+}
+.fig-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(20px,3vw,26px);
+  color:var(--navy);line-height:1.2;margin-bottom:8px;
+}
+.fig-sub{
+  font-size:14px;color:var(--text-muted);line-height:1.55;max-width:560px;
+}
+
+/* ── Two-panel grid ── */
+.panels{
+  display:grid;grid-template-columns:1fr 1fr;
+}
+@media(max-width:580px){.panels{grid-template-columns:1fr;}}
+
+/* ── Left panel: stats ── */
+.panel-left{
+  padding:28px;
+  border-right:1px solid var(--cream-dark);
+}
+.panel-label{
+  font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text-light);margin-bottom:20px;
+}
+
+.stat-item{margin-bottom:24px;}
+.stat-item:last-child{margin-bottom:0;}
+
+.stat-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+.stat-num{
+  font-family:'Playfair Display',serif;font-size:36px;font-weight:700;
+  line-height:1;
+}
+.stat-num.high{color:var(--navy);}
+.stat-num.conflict{color:var(--brick);}
+.stat-num.critical{color:var(--warn);}
+
+.stat-pct-label{font-size:12px;color:var(--text-muted);font-weight:500;}
+
+.stat-label-text{
+  font-size:13px;color:var(--text);font-weight:500;
+  margin-bottom:8px;line-height:1.35;
+}
+.stat-bar-track{
+  height:4px;background:var(--cream-dark);
+  border-radius:2px;overflow:hidden;position:relative;
+}
+.stat-bar-fill{
+  height:100%;border-radius:2px;
+  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+  width:0;
+}
+.stat-bar-fill.high{background:var(--navy);}
+.stat-bar-fill.conflict{background:var(--brick);}
+.stat-bar-fill.critical{
+  background:linear-gradient(to right,var(--brick),#e07050);
+}
+
+.stat-note{font-size:11px;color:var(--text-light);margin-top:5px;line-height:1.4;font-style:italic;}
+
+/* ── Right panel: H vs V ── */
+.panel-right{padding:28px;}
+
+.compare-block{margin-bottom:20px;}
+.compare-block:last-of-type{margin-bottom:0;}
+
+.compare-head{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.compare-badge{
+  font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;
+  flex-shrink:0;
+}
+.compare-badge.h{background:rgba(26,39,68,0.08);color:var(--navy);}
+.compare-badge.v{background:rgba(196,98,58,0.12);color:var(--brick);}
+.compare-title{font-size:14px;font-weight:600;color:var(--text);}
+
+.compare-body{font-size:13px;color:var(--text-muted);line-height:1.55;margin-bottom:8px;}
+
+.example-row{
+  background:var(--cream);
+  border-left:2px solid var(--cream-dark);
+  padding:6px 10px;
+  font-size:12px;color:var(--text-muted);
+  margin-bottom:4px;font-style:italic;
+}
+
+.outcome-row{
+  display:flex;align-items:center;gap:6px;margin-top:8px;
+}
+.outcome-badge{
+  font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;
+  letter-spacing:0.04em;
+}
+.outcome-badge.weak{background:var(--warn-bg);color:var(--warn);}
+.outcome-badge.strong{background:var(--ok-bg);color:var(--ok);}
+.outcome-text{font-size:12px;color:var(--text-muted);}
+
+.divider{border:none;border-top:1px solid var(--cream-dark);margin:16px 0;}
+
+.tbp-note{
+  background:var(--cream);
+  border-left:3px solid var(--brick);
+  padding:10px 12px;
+  margin-top:16px;
+}
+.tbp-note-label{
+  font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--brick);margin-bottom:4px;
+}
+.tbp-note-text{font-size:12px;color:var(--text);line-height:1.5;}
+
+/* ── Footer citations ── */
+.fig-footer{
+  padding:14px 28px;
+  border-top:1px solid var(--cream-dark);
+  background:var(--cream);
+}
+.citation-row{
+  font-size:11px;color:var(--text-light);line-height:1.55;
+}
+.citation-row sup{color:var(--brick);font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="widget">
+
+  <div class="band">
+    <span class="band-l">Digital Transformation i Praksis</span>
+    <span class="band-r">Figur 1.1</span>
+  </div>
+
+  <div class="title-block">
+    <div class="fig-eyebrow">Kapitel 01 — Figur 1.1</div>
+    <h2 class="fig-title">Gen AI-paradokset: Bred adoption, begrænset effekt</h2>
+    <p class="fig-sub">Næsten alle virksomheder bruger generativ AI. Næsten ingen måler effekt på bundlinjen. Årsagen er ikke manglende motivation — det er forkert type brug.</p>
+  </div>
+
+  <div class="panels">
+
+    <!-- LEFT: Stats -->
+    <div class="panel-left">
+      <div class="panel-label">Tre tal fra den globale AI-undersøgelse</div>
+
+      <div class="stat-item">
+        <div class="stat-top">
+          <span class="stat-num high" id="n1">0%</span>
+        </div>
+        <div class="stat-label-text">bruger generativ AI i mindst én forretningsfunktion</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill high" id="b1"></div></div>
+        <div class="stat-note">McKinsey Global AI Survey, marts 2025 ¹</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-top">
+          <span class="stat-num conflict" id="n2">0%</span>
+        </div>
+        <div class="stat-label-text">rapporterer nul målbar effekt på bundlinjen</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill conflict" id="b2"></div></div>
+        <div class="stat-note">Samme respondenter. Begge tal: otte ud af ti. Det er paradokset.</div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-top">
+          <span class="stat-num critical" id="n3">0%</span>
+        </div>
+        <div class="stat-label-text">betragter deres AI-strategi som moden</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill critical" id="b3"></div></div>
+        <div class="stat-note">McKinsey / QuantumBlack, juni 2025 ²</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: H vs V -->
+    <div class="panel-right">
+      <div class="panel-label">Årsagen: to typer AI-brug</div>
+
+      <div class="compare-block">
+        <div class="compare-head">
+          <span class="compare-badge h">Horisontal</span>
+          <span class="compare-title">AI oven på eksisterende processer</span>
+        </div>
+        <div class="compare-body">Copilot til mødereferater, ChatGPT til mailformulering, Teams-resuméer. Tilgængeligt, nemt at rulle ud — kræver ingen strukturel ændring.</div>
+        <div class="example-row">Microsoft 365 Copilot: ~70% af Fortune 500</div>
+        <div class="outcome-row">
+          <span class="outcome-badge weak">Svag effekt</span>
+          <span class="outcome-text">Gevinsten fordeler sig tyndt — ingen ser synlige resultater</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="compare-block">
+        <div class="compare-head">
+          <span class="compare-badge v">Vertikal</span>
+          <span class="compare-title">AI der ændrer én proces grundlæggende</span>
+        </div>
+        <div class="compare-body">Bygget ind i et specifikt workflow. Ikke ét klik smartere — anderledes organiseret. Kræver procesforståelse, domæneviden og iterativ bygning.</div>
+        <div class="example-row">Kontraktgenerator: Word → tresproget AI-kontrakt med EU-compliance</div>
+        <div class="outcome-row">
+          <span class="outcome-badge strong">Strukturel forskel</span>
+          <span class="outcome-text">Men: under 10% skalerer ud over pilotfasen ²</span>
+        </div>
+      </div>
+
+      <div class="tbp-note">
+        <div class="tbp-note-label">TBP Supply — case</div>
+        <div class="tbp-note-text">Én eftermiddag at bygge. Én times gennemgang hos Dansk Erhverv. Derefter i produktion. Det er vertikal AI — og det er det, bogen handler om at gøre tilgængeligt for SMV'er.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fig-footer">
+    <div class="citation-row">
+      <sup>1</sup> "The State of AI: How Organizations Are Rewiring to Capture Value," McKinsey, marts 2025. &nbsp;
+      <sup>2</sup> "Seizing the Agentic AI Advantage," QuantumBlack / McKinsey, juni 2025. &nbsp;
+      <sup>3</sup> Jesper Luff Olesen, Partner, BCT, LinkedIn, april 2026.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Animate bars and numbers on load
+function animateCount(el, target, suffix, duration) {
+  const start = performance.now();
+  function update(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (t < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function animateBar(el, pct, delay) {
+  setTimeout(() => { el.style.width = pct + '%'; }, delay);
+}
+
+window.addEventListener('load', () => {
+  // Staggered animation
+  setTimeout(() => { animateCount(document.getElementById('n1'), 78, '%', 900); animateBar(document.getElementById('b1'), 78, 0); }, 200);
+  setTimeout(() => { animateCount(document.getElementById('n2'), 80, '%', 900); animateBar(document.getElementById('b2'), 80, 0); }, 500);
+  setTimeout(() => { animateCount(document.getElementById('n3'), 1, '%', 600); animateBar(document.getElementById('b3'), 1, 0); }, 800);
+});
+</script>
+</body>
+</html>
