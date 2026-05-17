@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Transformation i Praksis — Robert Erichsen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navy-light:#243357;--cream:#f5f0e8;--cream-dark:#ede7d9;--brick:#c4623a;--brick-dark:#a84e2a;--text:#1a2744;--text-muted:#5a6478;--text-light:#8a95a8;--white:#ffffff;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;}
+
+.amb-banner{background:var(--brick);color:#fff;text-align:center;font-size:12px;font-weight:500;letter-spacing:0.06em;padding:9px 20px;position:sticky;top:0;z-index:200;}
+.amb-banner span{opacity:0.8;}
+
+header{background:var(--navy);padding:18px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:41px;z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);letter-spacing:0.04em;opacity:0.9;}
+.header-nav{display:flex;gap:8px;align-items:center;}
+.header-nav a{font-size:13px;color:rgba(245,240,232,0.6);text-decoration:none;padding:6px 12px;border-radius:3px;transition:color 0.2s;cursor:pointer;}
+.header-nav a:hover{color:var(--cream);}
+.header-cta{font-size:13px;font-weight:500;color:var(--cream);background:var(--brick);border:none;padding:9px 20px;border-radius:3px;cursor:pointer;text-decoration:none;transition:background 0.2s;}
+.header-cta:hover{background:var(--brick-dark);}
+
+.hero{background:var(--navy);padding:80px 40px 0;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-80px;width:420px;height:420px;border-radius:50%;background:rgba(196,98,58,0.07);pointer-events:none;}
+.hero-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 280px;gap:60px;align-items:end;}
+.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--brick);margin-bottom:22px;opacity:0;animation:fadeUp 0.6s ease forwards 0.1s;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(34px,4.5vw,52px);line-height:1.12;color:var(--white);margin-bottom:28px;opacity:0;animation:fadeUp 0.6s ease forwards 0.2s;}
+.hero-title em{font-style:italic;color:var(--cream);opacity:0.85;}
+.hero-sub{font-size:17px;line-height:1.65;color:rgba(245,240,232,0.75);font-weight:300;max-width:480px;margin-bottom:32px;opacity:0;animation:fadeUp 0.6s ease forwards 0.3s;}
+.hero-sub strong{color:var(--cream);font-weight:500;}
+.hero-badge{display:inline-block;background:rgba(196,98,58,0.15);border:1px solid rgba(196,98,58,0.35);color:#e8956e;font-size:12px;font-weight:500;letter-spacing:0.06em;padding:6px 14px;border-radius:20px;margin-bottom:32px;opacity:0;animation:fadeUp 0.6s ease forwards 0.35s;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.6s ease forwards 0.4s;}
+.btn-primary{background:var(--brick);color:#fff;border:none;padding:14px 28px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.2s;}
+.btn-primary:hover{background:var(--brick-dark);}
+.btn-ghost{background:transparent;color:rgba(245,240,232,0.7);border:1px solid rgba(245,240,232,0.25);padding:14px 28px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;}
+.btn-ghost:hover{color:var(--cream);border-color:rgba(245,240,232,0.5);}
+
+.book-visual{align-self:end;opacity:0;animation:fadeUp 0.7s ease forwards 0.45s;}
+.book{width:170px;height:240px;background:linear-gradient(135deg,#c4623a 0%,#a84e2a 100%);border-radius:3px 8px 8px 3px;position:relative;box-shadow:-8px 12px 40px rgba(0,0,0,0.5),4px 0 0 #8a3d20 inset;margin:0 auto;display:flex;flex-direction:column;justify-content:space-between;padding:22px 18px 18px;}
+.book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:14px;background:linear-gradient(to right,#7a3418,#a84e2a);border-radius:3px 0 0 3px;}
+.book-label{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.6);font-weight:500;}
+.book-title-text{font-family:'Playfair Display',serif;font-size:15px;line-height:1.25;color:#fff;font-weight:700;}
+.book-title-text em{font-style:italic;display:block;font-size:12px;font-weight:400;opacity:0.85;margin-top:4px;}
+.book-author{font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:0.06em;}
+
+.hero-strip{background:var(--navy);padding:0 40px 60px;}
+.strip-inner{max-width:860px;margin:0 auto;border-top:1px solid rgba(245,240,232,0.1);padding-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.strip-num{font-family:'Playfair Display',serif;font-size:32px;color:rgba(196,98,58,0.35);line-height:1;margin-bottom:8px;}
+.strip-label{font-size:13px;font-weight:500;color:rgba(245,240,232,0.8);margin-bottom:4px;}
+.strip-desc{font-size:12px;color:rgba(245,240,232,0.4);line-height:1.5;}
+
+.chapters-section{max-width:860px;margin:0 auto;padding:80px 40px;}
+.section-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--brick);margin-bottom:12px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,38px);color:var(--navy);margin-bottom:16px;}
+.section-intro{font-size:17px;color:var(--text-muted);line-height:1.65;max-width:580px;margin-bottom:48px;}
+
+.chapter-row{display:grid;grid-template-columns:48px 1fr auto;gap:20px;align-items:start;padding:24px;background:var(--white);border:1px solid var(--cream-dark);border-radius:4px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;}
+.chapter-row:hover{border-color:var(--brick);box-shadow:0 2px 12px rgba(196,98,58,0.1);transform:translateX(3px);}
+.chapter-row.locked{cursor:default;opacity:0.65;}
+.chapter-row.locked:hover{transform:none;border-color:var(--cream-dark);box-shadow:none;}
+.ch-num{font-family:'Playfair Display',serif;font-size:22px;color:var(--brick);opacity:0.5;padding-top:2px;}
+.ch-body h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.ch-body p{font-size:14px;color:var(--text-muted);line-height:1.55;}
+.ch-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:2px;}
+.badge-free{font-size:10px;font-weight:600;letter-spacing:0.06em;color:#3d8b5e;background:rgba(61,139,94,0.1);border:1px solid rgba(61,139,94,0.25);padding:3px 10px;border-radius:10px;}
+.badge-locked{font-size:10px;font-weight:600;letter-spacing:0.06em;color:var(--text-light);background:rgba(138,149,168,0.1);border:1px solid rgba(138,149,168,0.2);padding:3px 10px;border-radius:10px;}
+.ch-arrow{font-size:18px;color:var(--brick);opacity:0;transition:opacity 0.2s;margin-top:2px;}
+.chapter-row:hover .ch-arrow{opacity:1;}
+
+.author-section{background:var(--navy);padding:80px 40px;}
+.author-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:80px 1fr;gap:32px;align-items:start;}
+.author-avatar{width:80px;height:80px;background:var(--brick);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;color:#fff;font-weight:700;flex-shrink:0;}
+.author-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--brick);margin-bottom:8px;}
+.author-name{font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:4px;}
+.author-title{font-size:13px;color:rgba(245,240,232,0.5);margin-bottom:20px;}
+.author-bio{font-size:15px;color:rgba(245,240,232,0.7);line-height:1.75;}
+.author-bio strong{color:var(--cream);font-weight:500;}
+
+.paywall-section{max-width:860px;margin:0 auto;padding:80px 40px;text-align:center;}
+.paywall-box{background:var(--navy);border-radius:8px;padding:60px 48px;position:relative;overflow:hidden;}
+.paywall-box::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(196,98,58,0.15),transparent 70%);pointer-events:none;}
+.paywall-lock{font-size:36px;margin-bottom:20px;}
+.paywall-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);margin-bottom:14px;}
+.paywall-sub{font-size:16px;color:rgba(245,240,232,0.6);line-height:1.65;max-width:400px;margin:0 auto 28px;}
+.paywall-price{font-family:'Playfair Display',serif;font-size:52px;color:var(--brick);margin-bottom:4px;}
+.paywall-price span{font-size:20px;color:rgba(245,240,232,0.4);font-family:'DM Sans';}
+.paywall-note{font-size:13px;color:rgba(245,240,232,0.4);margin-bottom:28px;}
+.paywall-features{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.paywall-feat{font-size:13px;color:rgba(245,240,232,0.6);}
+.paywall-feat::before{content:'✓ ';color:var(--brick);font-weight:700;}
+.paywall-btn{background:var(--brick);color:#fff;border:none;padding:16px 40px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:background 0.2s;display:inline-block;}
+.paywall-btn:hover{background:var(--brick-dark);}
+.paywall-small{font-size:12px;color:rgba(245,240,232,0.3);margin-top:14px;}
+
+footer{background:#111827;padding:32px 40px;text-align:center;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:14px;color:rgba(245,240,232,0.4);margin-bottom:6px;}
+.footer-note{font-size:12px;color:rgba(245,240,232,0.2);}
+
+/* READING VIEW */
+#reading-view{display:none;background:var(--cream);min-height:100vh;}
+.reader-header{background:var(--navy);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:41px;z-index:100;}
+.reader-back{font-size:13px;color:rgba(245,240,232,0.7);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:6px 0;display:flex;align-items:center;gap:6px;transition:color 0.2s;}
+.reader-back:hover{color:var(--cream);}
+.reader-title-bar{font-size:13px;color:rgba(245,240,232,0.4);font-family:'Playfair Display',serif;}
+.reader-progress{display:flex;gap:5px;align-items:center;}
+.rpd{width:7px;height:7px;border-radius:50%;background:rgba(245,240,232,0.2);transition:background 0.3s;}
+.rpd.done{background:var(--brick);}
+.rpd.active{background:var(--cream);}
+
+.reader-content{max-width:680px;margin:0 auto;padding:60px 40px 120px;}
+.chapter-nav-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--cream-dark);}
+.ch-tab{font-size:12px;font-weight:500;padding:7px 16px;border-radius:3px;cursor:pointer;background:transparent;border:1px solid var(--cream-dark);color:var(--text-muted);transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.ch-tab:hover{border-color:var(--brick);color:var(--brick);}
+.ch-tab.active{background:var(--navy);color:var(--cream);border-color:var(--navy);}
+.ch-tab.locked-tab{opacity:0.4;cursor:not-allowed;}
+
+.reader-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--brick);margin-bottom:14px;}
+.reader-chapter-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);line-height:1.15;color:var(--navy);margin-bottom:22px;}
+.reader-chapter-title em{font-style:italic;}
+.reader-lead{font-size:19px;font-style:italic;color:var(--text-muted);line-height:1.65;margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--cream-dark);font-family:'Playfair Display',serif;}
+
+.reader-body{font-size:17px;line-height:1.82;color:var(--text);}
+.reader-body p{margin-bottom:1.4em;}
+.reader-body h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--navy);margin:2.5em 0 0.8em;line-height:1.25;}
+.reader-body h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin:2em 0 0.6em;}
+.reader-body em{color:var(--text-muted);}
+.reader-body strong{font-weight:600;color:var(--navy);}
+
+.callout{background:var(--navy);color:var(--cream);border-radius:4px;padding:28px 32px;margin:2em 0;position:relative;}
+.callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brick);border-radius:4px 0 0 4px;}
+.callout p{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;line-height:1.6;color:var(--cream);margin:0;}
+
+.learning-box{background:rgba(196,98,58,0.05);border:1px solid rgba(196,98,58,0.2);border-left:3px solid var(--brick);padding:20px 24px;border-radius:0 4px 4px 0;margin:2em 0;}
+.learning-label{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--brick);margin-bottom:8px;}
+.learning-box p{font-size:16px;color:var(--text);margin:0;line-height:1.65;}
+
+.figure-note{background:var(--cream-dark);border-radius:4px;padding:16px 20px;margin:2em 0;font-size:13px;color:var(--text-muted);font-style:italic;text-align:center;border:1px dashed rgba(90,100,120,0.2);}
+
+.chapter-end{margin-top:80px;padding-top:40px;border-top:1px solid var(--cream-dark);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.chapter-end-prev{font-size:14px;color:var(--text-muted);text-decoration:none;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:8px;transition:color 0.2s;padding:0;}
+.chapter-end-prev:hover{color:var(--navy);}
+.chapter-end-next{background:var(--navy);color:var(--cream);padding:14px 28px;border-radius:3px;font-size:14px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:background 0.2s;display:flex;align-items:center;gap:8px;}
+.chapter-end-next:hover{background:var(--navy-light);}
+.chapter-end-next.locked{background:var(--cream-dark);color:var(--text-muted);cursor:default;}
+.chapter-end-next.locked:hover{background:var(--cream-dark);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+@media(max-width:640px){
+  header,.reader-header{padding:14px 20px;}
+  .hero{padding:50px 20px 0;}
+  .hero-inner{grid-template-columns:1fr;gap:30px;}
+  .book-visual{display:none;}
+  .hero-strip{padding:0 20px 40px;}
+  .strip-inner{grid-template-columns:1fr 1fr;gap:16px;}
+  .chapters-section,.paywall-section{padding:50px 20px;}
+  .author-section{padding:50px 20px;}
+  .author-inner{grid-template-columns:1fr;}
+  .reader-content{padding:40px 20px 80px;}
+  .paywall-box{padding:40px 24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="amb-banner">🔒 Ambassadør-forhåndsvisning · <span>Ikke offentliggjort endnu — maj 2026</span></div>
+
+<div id="landing-view">
+<header>
+  <div class="logo">Digital Transformation i Praksis</div>
+  <nav class="header-nav">
+    <a onclick="document.getElementById('chapters-section').scrollIntoView({behavior:'smooth'})">Kapitler</a>
+    <a onclick="document.getElementById('author-section').scrollIntoView({behavior:'smooth'})">Om forfatteren</a>
+  </nav>
+  <a class="header-cta" onclick="openChapter('prolog')">Læs gratis →</a>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Ny bog · Maj 2026</div>
+      <h1 class="hero-title">Digital Transformation <em>i Praksis</em></h1>
+      <p class="hero-sub">Ikke teori. Ikke konsulentsprog. <strong>Dokumentationen af en reel virksomheds rejse</strong> — fra Excel-regneark til AI-platform, kapitel for kapitel, mens det sker.</p>
+      <div class="hero-badge">✓ Prolog + kapitel 1–2 er gratis — ingen tilmelding</div>
+      <div class="hero-actions">
+        <a class="btn-primary" onclick="openChapter('prolog')">Start læsning gratis →</a>
+        <a class="btn-ghost" onclick="document.getElementById('chapters-section').scrollIntoView({behavior:'smooth'})">Se alle kapitler</a>
+      </div>
+    </div>
+    <div class="book-visual">
+      <div class="book">
+        <div class="book-label">Bog · 2026</div>
+        <div class="book-title-text">Digital Transformation <em>i Praksis</em></div>
+        <div class="book-author">Robert Erichsen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hero-strip">
+  <div class="strip-inner">
+    <div>
+      <div class="strip-num">12</div>
+      <div class="strip-label">Kapitler</div>
+      <div class="strip-desc">Fra idé til autonom AI — dokumenteret i realtid</div>
+    </div>
+    <div>
+      <div class="strip-num">0</div>
+      <div class="strip-label">IT-afdeling</div>
+      <div class="strip-desc">Alt bygget af én person ved siden af en fuld arbejdsuge</div>
+    </div>
+    <div>
+      <div class="strip-num">3</div>
+      <div class="strip-label">Gratis kapitler</div>
+      <div class="strip-desc">Prolog + kapitel 1–2 uden tilmelding eller kreditkort</div>
+    </div>
+    <div>
+      <div class="strip-num">39</div>
+      <div class="strip-label">kr./mdr.</div>
+      <div class="strip-desc">Alle kapitler, alle opdateringer — stop når du vil</div>
+    </div>
+  </div>
+</div>
+
+<section class="chapters-section" id="chapters-section">
+  <div class="section-eyebrow">Indhold</div>
+  <h2 class="section-title">Tolv kapitler. Én reel rejse.</h2>
+  <p class="section-intro">Bogen udgives løbende. Prolog + kapitel 00–02 er tilgængelige nu og gratis. Kapitel 03 og frem for abonnenter — publiceres månedligt.</p>
+
+  <div class="chapter-row" onclick="openChapter('prolog')">
+    <div class="ch-num">00</div>
+    <div class="ch-body">
+      <h3>Prolog — fra Mural-tavle til AI-platform</h3>
+      <p>Den dag salgschefen stod i min dør. Tre Mural-tavler over tretten måneder. Og erkendelsen af, at virksomheden ikke kunne skaleres, som den var opbygget.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-free">Gratis</span><span class="ch-arrow">→</span></div>
+  </div>
+
+  <div class="chapter-row" onclick="openChapter('kap01')">
+    <div class="ch-num">01</div>
+    <div class="ch-body">
+      <h3>Før man bygger: hvad AI egentlig kræver</h3>
+      <p>November 31 eksisterer ikke — og EU law er ikke en juridisk kategori. Om forskellen på AI-adgang og AI-modenhed, og hvorfor SMV'er strukturelt kan komme længst.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-free">Gratis</span><span class="ch-arrow">→</span></div>
+  </div>
+
+  <div class="chapter-row" onclick="openChapter('kap02')">
+    <div class="ch-num">02</div>
+    <div class="ch-body">
+      <h3>Kortlæg din virkelighed, og AI som processor</h3>
+      <p>Workflow-dekomposition i fem trin. Modenhedstesten. Og tre niveauer for, hvad det egentlig vil sige at arbejde med AI frem for blot at spørge den.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-free">Gratis</span><span class="ch-arrow">→</span></div>
+  </div>
+
+  <div class="chapter-row locked">
+    <div class="ch-num">03</div>
+    <div class="ch-body">
+      <h3>Første værktøjer: fra Excel til webapp på én eftermiddag</h3>
+      <p>En eftermiddag med claude.ai. Seks forsøg, tre fejl, og én salgschef der begyndte at vise prisberegneren til kunder i realtid. Tolv værktøjer på otte uger. Nul IT-afdeling.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-locked">🔒 Abonnent</span></div>
+  </div>
+
+  <div class="chapter-row locked">
+    <div class="ch-num">04</div>
+    <div class="ch-body">
+      <h3>Compliance som infrastruktur</h3>
+      <p>EU-forordningerne, INCI-verifikation og erkendelsen af, at compliance ikke er et bilag — det er fundamentet alle andre værktøjer hviler på.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-locked">🔒 Abonnent</span></div>
+  </div>
+
+  <div class="chapter-row locked">
+    <div class="ch-num">05–12</div>
+    <div class="ch-body">
+      <h3>Pilot, integration og skalering</h3>
+      <p>RAG-arkitektur, Business Central-integration, GenBI-platformen og hvad der sker, når det begynder at virke. Publiceres løbende 2026.</p>
+    </div>
+    <div class="ch-meta"><span class="badge-locked">🔒 Abonnent</span></div>
+  </div>
+</section>
+
+<section class="author-section" id="author-section">
+  <div class="author-inner">
+    <div class="author-avatar">R</div>
+    <div>
+      <div class="author-eyebrow">Om forfatteren</div>
+      <div class="author-name">Robert Erichsen</div>
+      <div class="author-title">Chief of Digital and Business Development, TBP Supply A/S</div>
+      <p class="author-bio">
+        Jeg er ikke it-konsulent. Jeg er leder i en dansk import- og distributionsvirksomhed inden for kosmetik og personpleje — og jeg har bygget de løsninger jeg skriver om, <strong>mens virksomheden kørte</strong>.<br><br>
+        Fra e-conomic til Business Central. Fra Excel-kataloger til AI-drevne ordreværktøjer. Fra ingenting til et datafundament der faktisk kan noget.<br><br>
+        Denne bog er ikke teori. Det er dokumentationen af rejsen — kapitel for kapitel, mens det sker.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="paywall-section">
+  <div class="paywall-box">
+    <div class="paywall-lock">📖</div>
+    <h2 class="paywall-title">Klar til at læse videre?</h2>
+    <p class="paywall-sub">Kapitel 03 og frem er for abonnenter. Alle kapitler, alle opdateringer — ingen binding.</p>
+    <div class="paywall-price">39 <span>kr./mdr.</span></div>
+    <div class="paywall-note">inkl. moms · afmeld når du vil</div>
+    <div class="paywall-features">
+      <span class="paywall-feat">Alle 12 kapitler</span>
+      <span class="paywall-feat">Månedlige opdateringer</span>
+      <span class="paywall-feat">Ingen binding</span>
+    </div>
+    <button class="paywall-btn">Bliv abonnent — 39 kr./mdr.</button>
+    <div class="paywall-small">Kommer snart · Ambassadører notificeres ved launch</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Digital Transformation i Praksis — Robert Erichsen</div>
+  <div class="footer-note">© 2026 · Ghost · Ambassadør-forhåndsvisning</div>
+</footer>
+</div><!-- /landing-view -->
+
+
+<div id="reading-view">
+<div class="amb-banner">🔒 Ambassadør-forhåndsvisning · <span>Ikke offentliggjort endnu — maj 2026</span></div>
+<div class="reader-header">
+  <button class="reader-back" onclick="closeReader()">← Oversigt</button>
+  <div class="reader-title-bar" id="reader-title-bar">Digital Transformation i Praksis</div>
+  <div class="reader-progress">
+    <div class="rpd" id="dot-prolog"></div>
+    <div class="rpd" id="dot-kap01"></div>
+    <div class="rpd" id="dot-kap02"></div>
+    <div class="rpd" style="opacity:0.3;"></div>
+  </div>
+</div>
+
+<div class="reader-content">
+  <div class="chapter-nav-tabs">
+    <button class="ch-tab" id="tab-prolog" onclick="openChapter('prolog')">Prolog</button>
+    <button class="ch-tab" id="tab-kap01" onclick="openChapter('kap01')">Kapitel 01</button>
+    <button class="ch-tab" id="tab-kap02" onclick="openChapter('kap02')">Kapitel 02</button>
+    <button class="ch-tab locked-tab" title="Kræver abonnement">Kapitel 03 🔒</button>
+  </div>
+
+  <!-- PROLOG -->
+  <div id="content-prolog" class="chapter-content">
+    <div class="reader-eyebrow">Prolog</div>
+    <h1 class="reader-chapter-title">Fra Mural-tavle <em>til AI-platform</em></h1>
+    <p class="reader-lead">Det startede ikke med en strategi. Det startede med en salgschef, der stod i min dør og spurgte om hjælp til en pris.</p>
+    <div class="reader-body">
+      <h2>En ganske almindelig tirsdag</h2>
+      <p>Det startede en tirsdag i maj 2024.</p>
+      <p>Vores salgschef stod i min dør og spurgte, om jeg kunne hjælpe hende med noget. En kunde havde bedt om en masse priser til et helt sortiment af produkter. Hun skulle nå at sende et tilbud inden for de kommende tre dage. Problemet var, at hun ikke helt vidste, hvilke priser hun kunne give.</p>
+      <p>Jeg var lige startet i virksomheden i marts måned, så jeg spurgte ind til, hvordan vi normalt beregnede priser. Det gik op for mig, at der ikke fandtes nogen fast fremgangsmåde. Der var ingen skabelon, ingen regler, intet nedskrevet noget sted. Hidtil havde det været direktøren, der havde beregnet priserne — han havde regnet det i hovedet og ført det ind i en kolonne i et Excel-ark.</p>
+      <p>Jeg satte mig ved computeren og byggede en simpel Excel-prisberegner med opslagsfunktioner samme eftermiddag. Det var ikke elegant, men det virkede. Hun kunne svare kunden inden fyraften.</p>
+      <p>Jeg lukkede computeren og tænkte, at det var det. Endnu en god dag.</p>
+      <h2>Det var ikke løst</h2>
+      <p>Det viste sig hurtigt, at der var variable, jeg ikke havde regnet med. Transport med skib, tog eller fly, der ændrede prisen løbende pga. krig og anden uro. Forsikring på lasten. Toldsatser. Samples til kunden. En bonustrappe baseret på, hvor meget kunden aftog. Marketing-omkostninger. Og senest, og måske det mest underfundigt komplicerede, emballage-afgiften under det udvidede producentansvar.</p>
+      <p>Excel-filen voksede. Ét faneblad blev til to, to blev til seks. Dollarkursen 6,91 fra den 13. maj stod stadig øverst i arket, men rundt om den var der pludselig kolonner til alle tænkelige butikskæder.</p>
+      <p>Det gik op for mig over de næste par uger, at prisberegneren aldrig kom til at være færdig. Ikke fordi den var dårlig — men fordi hver gang jeg troede, jeg havde den sidste variabel med, dukkede der en ny op.</p>
+      <div class="callout"><p>Den virkelige kompleksitet er altid større end den skabelon, der findes på skrivebordet. Og derfor er det aldrig skabelonen man skal arbejde på. Det er virkeligheden.</p></div>
+      <h2>Tavlen på væggen — juni 2024</h2>
+      <p>Knapt en måned senere satte jeg mig for at kortlægge hele virksomhedens processer. Jeg startede med Post-its og en ren tavle. Efterfølgende brugte jeg Mural til at tegne, hvad der faktisk sker hos TBP — fra det øjeblik vi kontakter en ny kunde, til produktet er på en butikshylde.</p>
+      <p>Det var udfordrende. Jeg opdagede, at jeg ikke selv vidste, hvad der skete flere steder. Folk beskrev det samme flow på tre forskellige måder, afhængigt af hvem der fortalte. Det samme data blev registreret tre gange: i Excel, i Business Central og i Monday. Ingen af stederne var det forkert. Men ingen af dem talte sammen.</p>
+      <p>Og jeg måtte acceptere, at TBP Supply ikke kunne skaleres, som virksomheden var opbygget — ikke fordi vi ikke arbejdede hårdt nok, men fordi selve processerne bestod af et usynligt system af mails, regneark og hukommelse, der krævede, at alle vidste alt.</p>
+      <h2>AI lagt ovenpå — oktober 2025</h2>
+      <p>Et år efter den første procestavle kopierede jeg hele strukturen over i et nyt Mural-board: <em>TBP AI Processor</em>. Samme roller, samme arbejdsgange, samme pile.</p>
+      <p>Men denne gang lagde jeg bobler ind der, hvor mennesker brugte tid på arbejde, som en maskine kunne hjælpe med. AI-forslag til brugsanvisninger. AI-tjek af symboler på produkter. INCI-rapport verifikation. Prisberegner. AI Dashboard.</p>
+      <p>Boblerne erstattede ikke folk. De erstattede ventetid, fejltjek og det trættende administrative arbejde, der sad mellem de steder, hvor folk faktisk tog beslutninger.</p>
+      <p>Det var den dag, bogen begyndte. Uden at jeg selv vidste det. For hvad der skete, var at jeg i praksis havde tegnet en metode — find steder, hvor mennesker venter på information, og læg AI ind netop der.</p>
+      <h2>Februar 2026: fra Excel til HTML</h2>
+      <p>Prisberegneren fra maj 2024 var stadig i brug — vokset til seks faneblade. Hver gang en ny sælger skulle bruge den, var hun nødt til at bede mig om en kopi, for ingen kunne huske, hvilken version der var den nyeste.</p>
+      <p>Jeg byggede den om til en HTML-side. Det tog en eftermiddag. Claude skrev koden, jeg sagde til, hvor jeg ville have ting. Da vi var færdige, lå siden ét sted, og alle brugte altid den nyeste version.</p>
+      <p>Det er det, kapitel 03 handler om. Men det hører hjemme her, fordi det er her, rejsen bliver håndgribelig — fra et regneark til et værktøj, der opdateres på minutter, når virkeligheden ændrer sig.</p>
+      <h2>Denne bog</h2>
+      <p>Jeg sælger ikke en metode. Jeg fortæller, hvad jeg har gjort, hvilke fejl jeg har lavet, og hvilke genveje jeg har fundet undervejs.</p>
+      <p>Magien i AI-assisteret byggearbejde ligger ikke i at have den perfekte plan fra start. Den ligger i samspillet med den sprogmodel, du arbejder med. Prøv, juster, prøv igen.</p>
+      <p>Og et lille sidespor, der faktisk hører hjemme her: denne bog er selv et eksempel på netop det. Den er bygget med de samme metoder, den beskriver — i samarbejde med claude.ai, med en fast ugentlig rutine, der henter ugens læring og sorterer den i kapitelstruktur. Det er den eneste måde, jeg har kunnet holde et løbende projekt i gang ved siden af en fuld arbejdsuge.</p>
+    </div>
+    <div class="chapter-end">
+      <span></span>
+      <button class="chapter-end-next" onclick="openChapter('kap01')">Kapitel 01 →</button>
+    </div>
+  </div>
+
+  <!-- KAPITEL 01 -->
+  <div id="content-kap01" class="chapter-content" style="display:none;">
+    <div class="reader-eyebrow">Kapitel 01</div>
+    <h1 class="reader-chapter-title">Før man bygger: <em>hvad AI egentlig kræver</em></h1>
+    <p class="reader-lead">November 31 eksisterer ikke. EU law er ikke en juridisk kategori. Og 90% af virksomheder krydser aldrig fra AI-adgang til AI-modenhed.</p>
+    <div class="reader-body">
+      <h2>Den umulige dato</h2>
+      <p>Den 31. marts 2026 sad jeg med to dokumenter foran mig — nye samarbejdsbetingelser og en underskrevet aftale med en leverandør i Asien. Vi overvejede at justere betingelserne til tre sprog, og jeg ville forstå, hvad EU kræver på det område.</p>
+      <p>Jeg åbnede claude.ai og spurgte.</p>
+      <p>Claude begyndte ikke med at give mig noget. Den begyndte med at fortælle mig, hvad der var galt.</p>
+      <p>To fejl. En dato: <em>"November 31, 2026"</em>. November har tredive dage. Den dato eksisterer ikke. Et lovvalg: <em>"EU law"</em> som kontraktvalgbar jurisdiktion. EU-ret er ikke en selvstændig retsorden, man kan vælge i en privat kontrakt. Det er juridisk meningsløst.</p>
+      <p>Begge fejl stod i dokumenter, vi havde i brug. I aftaler vi havde underskrevet. Ingen havde opdaget det — ikke fordi nogen var skødesløse, men fordi man holder op med at se et dokument, man har læst hundrede gange.</p>
+      <div class="learning-box">
+        <div class="learning-label">Lærdom</div>
+        <p>Inden man bygger et digitalt værktøj, skal man forstå, hvilket papirproblem det skal løse. AI læser som om det er første gang — hver gang.</p>
+      </div>
+      <h2>AI-modenhed er ikke det samme som AI-værktøjer</h2>
+      <p>Danmark klarer sig godt på AI-statistikkerne. Vi er et af de lande i Europa, der indfører AI hurtigst. Men det er ikke det samme som modenhed.</p>
+      <p>Copilot i Word, ChatGPT til en mail, Power Automate med et AI-step — det er adgang. Det er tegn på, at folk har fundet knapperne. Det er ikke tegn på, at virksomheden har ændret noget strukturelt.</p>
+      <h3>Hvad modenhed faktisk kræver</h3>
+      <p>Fire byggesten kendetegner modenhed frem for adgang. RAG-pipelines på egne data, så AI svarer ud fra <em>dine</em> dokumenter. Embeddings, der finder relateret indhold frem for blot matchende ord. Domænespecifikke modeller, der taler dit fagsprog. Og agentisk kode, hvor AI ikke blot svarer, men handler — kalder en API, henter data, verificerer.</p>
+      <h3>AI's Dunning-Kruger</h3>
+      <p>Virksomheder, der netop er begyndt at bruge AI, er typisk de mest begejstrede. De har prøvet Copilot og ChatGPT og er overbeviste om, at de er godt på vej. Det er de sjældent.</p>
+      <p>Modenhedsmodellen, inspireret af Jesper Luff Olesen fra BCT, har fem niveauer: Passiv, Fragmenteret, Bevidst, Integreret og Autonom. Mellem niveau to og tre ligger "The Gap". 90% krydser den aldrig. At krydse kræver tre ting: ledelsesforankring med budget. Systematisk kortlægning af processer. Et bevidst valg om én use case.</p>
+      <div class="figure-note">Figur 1.3 — Modenhedsstigen: Passiv → Fragmenteret → [THE GAP] → Bevidst → Integreret → Autonom · 90% krydser aldrig kløften</div>
+      <h2>Hvorfor SMV'er kan komme længst</h2>
+      <p>Det instinktive billede af AI-transformation er store virksomheder med tusindvis af medarbejdere. Det giver en fornemmelse af, at det er de store, der vinder. Det er en misforståelse.</p>
+      <p>Hos TBP gik der to dage fra tanken om en HTML-prisberegner til den lå i produktion. I en stor virksomhed ville det have krævet business case, steering committee og integrationsworkshop. AI ændrer sig hvert kvartal. Beslutningshastighed er ikke en luksus — det er en konkurrencefordel.</p>
+      <p>En SMV har heller ikke gammel teknisk gæld. Da vi besluttede at flytte prisberegneren fra Excel til HTML, var der ingen systemer, der skulle eftergives. Vi byggede noget nyt og brugte det fremover. Det er en frihed, store virksomheder betaler dyrt for.</p>
+      <p>Og en SMV kan teste på én medarbejder, der bruger et værktøj dagligt. Den første uge med prisberegneren afslørede fejl, der aldrig ville have dukket op i en testplan. Virkelig brug afslører virkelige friktionspunkter.</p>
+      <h2>Mockup-først, ikke teknologi-først</h2>
+      <p>Virksomheder starter typisk med systemet. De åbner Power Automate og forbinder ting, inden de har testet, om flowet giver mening. Uger senere har de bygget noget, der teknisk virker, men løser det forkerte problem.</p>
+      <p>Mit princip: mockup-først. Validér flow og struktur i en simpel prototype, inden du integrerer. En mockup koster næsten ingenting at lave om. En implementering koster tid, penge og momentum.</p>
+      <p>Jeg startede selv med ChatGPT. I efteråret 2025 deltog TBP i Tech Circle-workshops i Aarhus, og en deltager anbefalede claude.ai — særligt til iterativt arbejde over lange samtaler. Jeg skiftede, og det var det rigtige valg for mig. Det vigtigste er ikke <em>hvilket</em> AI-værktøj du vælger — det er, at du begynder at bruge det til noget konkret.</p>
+    </div>
+    <div class="chapter-end">
+      <button class="chapter-end-prev" onclick="openChapter('prolog')">← Prolog</button>
+      <button class="chapter-end-next" onclick="openChapter('kap02')">Kapitel 02 →</button>
+    </div>
+  </div>
+
+  <!-- KAPITEL 02 -->
+  <div id="content-kap02" class="chapter-content" style="display:none;">
+    <div class="reader-eyebrow">Kapitel 02</div>
+    <h1 class="reader-chapter-title">Kortlæg din virkelighed, <em>og AI som processor</em></h1>
+    <p class="reader-lead">Workflow-dekomposition i fem trin — og tre niveauer for, hvad det egentlig vil sige at arbejde med AI frem for blot at spørge den.</p>
+    <div class="reader-body">
+      <h2>Workflow-dekomposition i fem trin</h2>
+      <p>Denne metode udarbejdede jeg over de måneder, jeg arbejdede med Mural-tavlerne. Den fremkom i processen, fordi det var sådan, jeg kunne <em>se</em> præcis, hvor AI passede ind.</p>
+      <p><strong>Trin 1: Vælg ét konkret workflow.</strong> Ikke "vores produktudvikling", men "fra en kunde beder om en pris, til vi har sendt et tilbud". Et workflow med tydelig start og slutning. Sæt mål i timer eller dage, ikke uger.</p>
+      <p><strong>Trin 2: Beskriv 5–10 trin i rækkefølge.</strong> Skriv hvert trin på én linje med hvem der gør det. Du kommer til ti trin hurtigere, end du tror.</p>
+      <p><strong>Trin 3: Markér hvert trin som REGEL eller VURDERING.</strong> Regler er trin, hvor svaret er givet, hvis du har data nok. Vurderinger er trin, hvor menneskelig erfaring bestemmer udfaldet. Mange trin er blandinger — markér det, der dominerer.</p>
+      <p><strong>Trin 4: Regler er automatiseringspotentiale.</strong> Hvis et trin kræver at læse noget og forstå det, er det her AI har sine klare fordele. Hvis det er rent deterministisk, er det måske blot en formel.</p>
+      <p><strong>Trin 5: Vurderinger er beslutningsstøtte-potentiale.</strong> Automatisér dem ikke. Men læg et lag ovenpå: <em>"De sidste 12 sammenlignelige rabatter blev givet på følgende vilkår..."</em> Beslutningen er stadig sælgerens. Grundlaget er bedre.</p>
+      <h2>Et konkret eksempel: prisberegner-flowet</h2>
+      <p>Flowet går fra "sælger modtager kundeforespørgsel" til "tilbud sendt og registreret". Ni trin i alt. Det overraskende ved kortlægningen: fem ud af ni trin er regelbaserede. De fleste SMV'er undervurderer, hvor stor en del af deres arbejde der faktisk følger faste mønstre.</p>
+      <div class="learning-box">
+        <div class="learning-label">Konkret AI-mulighed</div>
+        <p>Trin 4 — kopier FOB-pris fra leverandørmail — er en ren regel. AI kan læse mailen og udtrække prisen automatisk. 5-10 min sparet pr. tilbud. Trin 7 — læg avance på — er en vurdering. Ikke til automatisering. Men AI kan vise, hvilke avancer der er givet på lignende ordrer de seneste 12 måneder.</p>
+      </div>
+      <h2>Modenhedstesten</h2>
+      <p>Fem niveauer, inspireret af Jesper Luff Olesen, BCT:</p>
+      <p><strong>1. Passiv</strong> — ChatGPT bruges til mails. Ingen strategi.<br>
+      <strong>2. Fragmenteret</strong> — Enkeltpersoner eksperimenterer. Ledelsen ved det knap.<br>
+      <strong>3. Bevidst</strong> — Ledelsen har prioriteret. Budget allokeret. Use cases valgt.<br>
+      <strong>4. Integreret</strong> — RAG i produktion. ROI måles. AI er infrastruktur.<br>
+      <strong>5. Autonom</strong> — AI-agenter eksekverer. Human-in-the-loop.</p>
+      <p>90% krydser aldrig "The Gap" fra niveau 2 til 3. Ikke fordi de ikke vil — men fordi det føles uoverskueligt at flytte fra værktøjsbrug til reel infrastruktur.</p>
+      <div class="figure-note">Modenhedstesten — tre spørgsmål, to minutter. Aktiveres her ved publicering.</div>
+      <h2>Claude som processor: fra opslagsværk til sparringspartner</h2>
+      <p>De fleste bruger AI på niveau ét. Niveau tre er det, der faktisk rykker noget.</p>
+      <p><strong>Niveau 1: AI som opslagsværk.</strong> Du stiller et spørgsmål, får et svar, går videre. Det fungerer til enkle faktuelle spørgsmål. Begrænsningen: AI'en ved ikke noget om <em>din</em> virksomhed.</p>
+      <p><strong>Niveau 2: AI som processor af dine egne data.</strong> Du giver AI'en din kontekst <em>først</em> — og så spørger. "Her er INCI-listen fra vores leverandør. Her er EU's krav. Hvad er afvigelserne?" Da vi testede INCI-verifikation første gang, identificerede Claude tre afvigelser på fire minutter. Det ville have taget en eftermiddag manuelt.</p>
+      <p><strong>Niveau 3: AI som sparringspartner i dialog.</strong> Du arbejder iterativt over tid — AI foreslår, du tester, opdager hvad der mangler, forklarer tilbage. Det er det, nogen kalder "vibe coding". Det kræver ikke, at du kan skrive kode. Det kræver, at du ved, hvad du vil have, og hvad der ikke virker.</p>
+      <div class="callout"><p>Din ekspertise om din forretning er langt mere værdifuld end nogen teknisk viden om, hvordan man spørger en AI. Forretningslogikken er råmaterialet. AI omsætter det til form.</p></div>
+      <p><strong>Den vigtigste designregel:</strong> Byg dine prompts, så AI'en kan udtrykke usikkerhed — ikke gætte sig til et svar. Da vi byggede vores personalehåndbog, instruerede vi Claude: markér med [AFKLARES], når du støder på noget, der kræver en ledelsesafgørelse. Vi fik et brugbart dokument <em>og</em> en liste over præcis de steder, der krævede vores egne beslutninger.</p>
+    </div>
+    <div class="chapter-end">
+      <button class="chapter-end-prev" onclick="openChapter('kap01')">← Kapitel 01</button>
+      <button class="chapter-end-next locked" onclick="alert('Kapitel 03 kræver abonnement.\n\n39 kr./mdr. inkl. moms — alle kapitler, ingen binding.\n\nAbonnement aktiveres ved launch.')">Kapitel 03 🔒</button>
+    </div>
+  </div>
+
+</div><!-- /reader-content -->
+</div><!-- /reading-view -->
+
+<script>
+function openChapter(ch){
+  document.getElementById('landing-view').style.display='none';
+  document.getElementById('reading-view').style.display='block';
+  window.scrollTo(0,0);
+  document.querySelectorAll('.chapter-content').forEach(c=>c.style.display='none');
+  var el=document.getElementById('content-'+ch);
+  if(el)el.style.display='block';
+  ['prolog','kap01','kap02'].forEach(function(id){
+    var t=document.getElementById('tab-'+id);
+    if(t)t.classList.toggle('active',id===ch);
+    var d=document.getElementById('dot-'+id);
+    if(d){d.className='rpd';var order=['prolog','kap01','kap02'];var ci=order.indexOf(ch);var di=order.indexOf(id);if(di<ci)d.classList.add('done');else if(di===ci)d.classList.add('active');}
+  });
+  var titles={prolog:'Prolog — Kapitel 00',kap01:'Kapitel 01',kap02:'Kapitel 02'};
+  document.getElementById('reader-title-bar').textContent=titles[ch]||'';
+}
+function closeReader(){
+  document.getElementById('reading-view').style.display='none';
+  document.getElementById('landing-view').style.display='block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
